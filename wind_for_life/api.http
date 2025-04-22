@@ -1,0 +1,5 @@
+
+
+GET http://127.0.0.1:8000/api/anemometers_readings 
+Content-Type : application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1MzQ1ODM5LCJpYXQiOjE3NDUzNDU1MzksImp0aSI6ImEyMDQ4ZGM1ZTE3MzRlMWE5NTYxNGQzZjI4NTc2NWFlIiwidXNlcl9pZCI6MX0.wL8BJ5LlVEbr0GqWQ_tNxlJaCjDf-HZ-B9RJjkHT_4U
