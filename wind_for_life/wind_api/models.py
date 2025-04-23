@@ -9,9 +9,6 @@ class Anemometer(models.Model):
     """
     Anemomter model class
     """   
-    class Meta:
-        verbose_name = 'Anemomètre'
-        unique_together = ['long', 'lat']
     
     name = models.CharField(
         max_length=255, 
@@ -22,7 +19,6 @@ class Anemometer(models.Model):
         max_digits=9, 
         decimal_places=6,
         help_text= "The longitude coordinates",
-        null=False,
         validators=[MinValueValidator(Decimal('-180.0')),
                     MaxValueValidator(Decimal('180.0'))]
     )
@@ -30,7 +26,6 @@ class Anemometer(models.Model):
         max_digits=9, 
         decimal_places=6,
         help_text="The latitude coordinates",
-        null=False,
         validators=[MinValueValidator(Decimal('-90.0')),
                     MaxValueValidator(Decimal('90.0'))]
     )
@@ -39,18 +34,30 @@ class Anemometer(models.Model):
     
     def __str__(self) -> str:
         return self.name
+
+class AnemometerCategory(models.Model):
+    """
+    Anemomter Category model class
+    """ 
     
- 
+    name = models.CharField(
+        max_length=255, 
+        help_text= "The name of the category",
+        unique=True
+    )
+    anemometers = models.ManyToManyField(
+        Anemometer,
+        related_name="categories"
+    )
     
+    def __str__(self) -> str:
+        return self.name   
+
+   
 class WindReading(models.Model):
     """
     WindReading model class
     """  
-    
-    class Meta:
-        verbose_name = 'Mesure de vitesse du vent'
-        unique_together = ['wind_speed', 'date', 'anemometer']
-        
     class WindUnit(models.TextChoices):
         KNOTS = 'Knots' 
     
@@ -66,19 +73,17 @@ class WindReading(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01')), 
                     MaxValueValidator(Decimal('200.00'))],
-        verbose_name='vitesse (en nœuds)'
     )
     wind_unit = models.CharField(
         max_length=15,
         choices=WindUnit.choices, default=WindUnit.KNOTS
     )
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)
     
     def __str__(self) -> str: 
-        return f'{self.anemometer.name} [{self.date}] - {self.wind_speed} {self.wind_unit}'
+        return f'{self.anemometer.name} - {self.wind_speed} {self.wind_unit}'
     
-
 
 class Tags(models.Model):
     """

@@ -33,6 +33,8 @@ class AnemometerListCreateView(generics.ListCreateAPIView[Anemometer]):
     serializer_class = AnemometerSerializer
     pagination_class = ListPagination
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['categories']
 
 
 class AnemometerDetailView(generics.RetrieveUpdateDestroyAPIView[Anemometer]):
@@ -65,7 +67,8 @@ class AnemometerReadingsListView(generics.ListAPIView):
     queryset = Anemometer.objects.all()
     serializer_class = AnemometerReadingsSerializer
     pagination_class = ListPagination
-
+    permission_classes = [IsAuthenticated]
+    
 
     
     
